@@ -3,8 +3,19 @@ import clsx from "clsx";
 
 import * as classes from "./memory.module.scss";
 
-const renderCell = (id: number, value: number, hightlighted: boolean) => (
-  <div key={id} className={clsx({ [classes.active]: hightlighted })}>
+const renderCell = (
+  id: number,
+  value: number,
+  hightlighted: boolean,
+  isStackPointer: boolean
+) => (
+  <div
+    key={id}
+    className={clsx({
+      [classes.active]: hightlighted,
+      [classes["stack-pointer"]]: isStackPointer
+    })}
+  >
     <div>{id}</div>
     <div>{value}</div>
   </div>
@@ -33,7 +44,8 @@ const Memory = (props: Props) => {
             value,
             props.highlighted
               ? props.highlighted.filter(key => key === id).length > 0
-              : false
+              : false,
+            props.stackPointer === id
           )
         )}
       </div>
@@ -44,6 +56,7 @@ const Memory = (props: Props) => {
 interface Props {
   memory: number[];
   highlighted?: number[];
+  stackPointer?: number;
 
   orientation?: "horizontal" | "vertical";
   title?: string;

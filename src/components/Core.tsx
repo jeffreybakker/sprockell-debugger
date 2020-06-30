@@ -84,6 +84,7 @@ const Core = (props: Props) => {
       />
       <Memory
         highlighted={getMem(instr, regs)}
+        stackPointer={sp}
         memory={props.simulator.steps[props.step].localMem[props.core]}
         orientation="vertical"
         title="Local memory"
