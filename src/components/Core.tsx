@@ -65,6 +65,7 @@ const getRefs = (i: Instruction, regs: number[], pc: number) => {
 
 const Core = (props: Props) => {
   const pc = props.simulator.steps[props.step].pc[props.core];
+  const sp = props.simulator.steps[props.step].sp[props.core];
   const instr = props.simulator.instructions[props.core][pc];
   const regs = props.simulator.steps[props.step].regs[props.core];
 
@@ -77,7 +78,7 @@ const Core = (props: Props) => {
       />
       <Memory
         highlighted={getRegs(instr)}
-        memory={props.simulator.steps[props.step].regs[props.core]}
+        memory={[...props.simulator.steps[props.step].regs[props.core], sp, pc]}
         orientation="vertical"
         title="Registers"
       />
