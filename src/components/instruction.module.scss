@@ -1,0 +1,85 @@
+.line {
+  width: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  padding-right: 8px;
+  margin-right: 4px;
+
+  background-color: rgba(0,0,0,0.2);
+
+  color: #969896;
+  font-size: 0.625rem;
+}
+
+.address {
+  color: #b5bd68;
+}
+
+.name {
+  color: #81a2be;
+}
+
+.op {
+  color: #de935f;
+}
+
+.reg {
+  color: #cc6666;
+}
+
+.target {
+  color: #b294bb;
+}
+
+.active {
+  background-color: #282a2e;
+}
+
+.referenced {
+  background-color: #373b41;
+}
+
+.instruction {
+  display: flex;
+
+  div:last-child {
+    display: flex;
+
+    div {
+      display: flex;
+
+      margin-left: 4px;
+    }
+  }
+}
+
+.empty {
+  width: 100%;
+  min-height: calc(1.5 * 0.9rem);
+  max-height: calc(100% - 1.5 * 0.9rem);
+
+  flex-grow: 1;
+
+  .line {
+    height: 100%;
+  }
+}
+
+.set {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow-y: auto;
+
+  background-color: #1d1f21;
+
+  color: #c5c8c6;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
