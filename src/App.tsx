@@ -120,8 +120,8 @@ class App extends React.Component<any, State> {
               {
                 text: "1. Clone and install",
                 link: {
-                  url: "https://github.com/leonschoorl/sprockell",
-                  title: "github.com/leonschoorl/sprockell"
+                  url: "https://github.com/jeffreybakker/sprockell",
+                  title: "github.com/jeffreybakker/sprockell"
                 }
               },
               {
@@ -143,9 +143,19 @@ class App extends React.Component<any, State> {
               { text: " " },
               {
                 text:
-                  "4. Proxy the connection to the debugger to port 1234 using websockify-js"
+                  "4. Proxy the connection to the debugger to port 1234 using websockify-js:"
               },
-              { text: "5. Refresh this page and have fun!" }
+              {
+                text: "--> `websockify.js 1234 127.0.0.1:1235`"
+              },
+              { text: " " },
+              { text: "5. Refresh this page and have fun!" },
+              { text: " " },
+              { text: " " },
+              {
+                text:
+                  "(Please note that you have to restart websockify and your code every time you refresh the browser)"
+              }
             ])}
           />
         ) : (
@@ -186,6 +196,7 @@ class App extends React.Component<any, State> {
       (ev.data as Blob).text().then(text => {
         this.queue.push(text);
         if (text.endsWith("\n")) this.processQueue(ws);
+        console.log(ev);
       });
 
     this.processing = true;
@@ -216,7 +227,7 @@ class App extends React.Component<any, State> {
     };
 
     // Run breakpoints
-    for (; step <= start + 10; step++) {
+    for (; step < start + 10; step++) {
       if (this.state.breakpoints.some(test)) {
         console.warn("breakpoint" + step);
         this.onPause();
