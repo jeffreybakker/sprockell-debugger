@@ -78,9 +78,12 @@ const Core = (props: Props) => {
       />
       <Memory
         highlighted={getRegs(instr)}
-        memory={[...props.simulator.steps[props.step].regs[props.core], sp, pc]}
+        memory={props.simulator.steps[props.step].regs[props.core]}
         orientation="vertical"
         title="Registers"
+        type="regs"
+        core={props.core}
+        onAddBreakpoint={props.onAddBreakpoint}
       />
       <Memory
         highlighted={getMem(instr, regs)}
@@ -88,6 +91,9 @@ const Core = (props: Props) => {
         memory={props.simulator.steps[props.step].localMem[props.core]}
         orientation="vertical"
         title="Local memory"
+        type="private"
+        core={props.core}
+        onAddBreakpoint={props.onAddBreakpoint}
       />
     </div>
   );
@@ -97,6 +103,7 @@ interface Props {
   core: number;
   simulator: Simulator;
   step: number;
+  onAddBreakpoint: (p: Breakpoint) => void;
 }
 
 export default Core;

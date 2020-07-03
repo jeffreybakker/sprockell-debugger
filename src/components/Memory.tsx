@@ -1,13 +1,15 @@
 import * as React from "react";
 import clsx from "clsx";
 
+import { Breakpoint } from "../App";
 import * as classes from "./memory.module.scss";
 
 const renderCell = (
   id: number,
   value: number,
   hightlighted: boolean,
-  isStackPointer: boolean
+  isStackPointer: boolean,
+  onClick: (id: number) => void
 ) => (
   <div
     key={id}
@@ -15,6 +17,8 @@ const renderCell = (
       [classes.active]: hightlighted,
       [classes["stack-pointer"]]: isStackPointer
     })}
+    onClick={() => onClick(id)}
+    title="Click to set breakpoint"
   >
     <div>{id}</div>
     <div>{value}</div>
@@ -22,6 +26,51 @@ const renderCell = (
 );
 
 const Memory = (props: Props) => {
+  const createBreakpoint = (cell: number) => {
+    let value = null;
+
+    if (props.type === "shared")
+      value = window.prompt(
+        `Your breakpoint should activate whenever #${cell} in the shared memory is equal to...`,
+        `${props.memory[cell]}`
+      );
+    else if (props.type === "private")
+      value = window.prompt(
+        `Your breakpoint should activate whenever #${cell} in the private memory of core ${
+          props.core
+        } is equal to...`,
+        `${props.memory[cell]}`
+      );
+    else if (props.type === "regs")
+      value = window.prompt(
+        `Your breakpoint should activate whenever #${cell} in the registers of core ${
+          props.core
+        } is equal to...`,
+        `${props.memory[cell]}`
+      );
+
+    if (value === null || value === "") return;
+
+    let res = parseInt(value, 10);
+    if (isNaN(res)) return;
+
+    props.onAddBreakpoint((sim, step) => {
+      let positive = props.core !== undefined ? props.core : false;
+      let core = props.core !== undefined ? props.core : 0;
+
+      switch (props.type) {
+        case "shared":
+          return sim.steps[step].sharedMem[cell] === res;
+        case "private":
+          return sim.steps[step].localMem[core][cell] === res
+            ? positive
+            : false;
+        case "regs":
+          return sim.steps[step].regs[core][cell] === res ? positive : false;
+      }
+    });
+  };
+
   return (
     <div
       className={clsx(classes.root, {
@@ -45,7 +94,8 @@ const Memory = (props: Props) => {
             props.highlighted
               ? props.highlighted.filter(key => key === id).length > 0
               : false,
-            props.stackPointer === id
+            props.stackPointer === id,
+            createBreakpoint
           )
         )}
       </div>
@@ -54,9 +104,12 @@ const Memory = (props: Props) => {
 };
 
 interface Props {
+  core?: number;
   memory: number[];
   highlighted?: number[];
   stackPointer?: number;
+  onAddBreakpoint: (p: Breakpoint) => void;
+  type: "shared" | "private" | "regs";
 
   orientation?: "horizontal" | "vertical";
   title?: string;

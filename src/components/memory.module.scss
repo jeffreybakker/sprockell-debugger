@@ -66,6 +66,14 @@
 
     position: relative;
 
+    cursor: pointer;
+
+    transition: background 0.25s;
+
+    &:hover {
+      background-color: rgba(255,255,255,0.15);
+    }
+
     div:first-child {
       position: absolute;
       top: 2px;

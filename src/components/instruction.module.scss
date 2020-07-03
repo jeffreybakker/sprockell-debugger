@@ -3,6 +3,7 @@
 
   display: flex;
   align-items: center;
+  flex-basis: 40px;
   justify-content: flex-end;
 
   padding-right: 8px;
@@ -47,6 +48,8 @@
 
   div:last-child {
     display: flex;
+
+    flex-shrink: 1;
 
     div {
       display: flex;
